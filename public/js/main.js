@@ -33,6 +33,7 @@ socket.on('log',function(array) {
 
 
 socket.on('join_room_response', function(payload){
+
 	if(payload.result == 'fail'){
 		alert(payload.message);
 		return;

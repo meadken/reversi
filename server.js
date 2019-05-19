@@ -132,7 +132,8 @@ io.sockets.on('connection', function (socket) {
 							username: username,
 							membership: (numClients + 1)
 						};
-		io.sockets.in(room).emit('join_room_response'.success_data);
+		io.sockets.in(room).emit('join_room_response', success_data);
+		console.log('Server log');
 		log('Room ' + room + ' was just joined by '+ username);
 
 	});
