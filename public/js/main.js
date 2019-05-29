@@ -41,7 +41,7 @@ socket.on('join_room_response', function(payload){
 		return;
 	}
 
-	/* If we are breing notified that we joined the room, then ignore it */
+	/* If we are being notified that we joined the room, then ignore it */
 	if(payload.socket_id == socket.id) {
 		return;
 	}
@@ -114,6 +114,7 @@ socket.on('player_disconnected', function(payload){
 	newNode.slideDown(1000);
 });
 
+/* Send an invite message to the server */
 function invite(who){
 	var payload = {};
 	payload.requested_user = who;
@@ -123,6 +124,7 @@ function invite(who){
 
 }
 
+/* Handle a response after sending an invite message to the server */
 socket.on('invite_response', function(payload){
 	if(payload.result == 'fail'){
 		alert(payload.message);
@@ -132,6 +134,7 @@ socket.on('invite_response', function(payload){
 	$('.socket_'+payload.socket_id+' button').replaceWith(newNode);
 });
 
+/* Handle a notification that we have been invited */
 socket.on('invited', function(payload){
 	if(payload.result == 'fail'){
 		alert(payload.message);
@@ -140,6 +143,44 @@ socket.on('invited', function(payload){
 	var newNode = makePlayButton();
 	$('.socket_'+payload.socket_id+' button').replaceWith(newNode);
 });
+
+
+
+/* Send an uninvite message to the server */
+function uninvite(who){
+	var payload = {};
+	payload.requested_user = who;
+
+	console.log('*** Client Log Message: \'uninvite\' payload: '+JSON.stringify(payload));
+	socket.emit('uninvite',payload);
+
+}
+
+/* Handle a response after sending an uninvite message to the server */
+socket.on('uninvite_response', function(payload){
+	if(payload.result == 'fail'){
+		alert(payload.message);
+		return;
+	}
+	var newNode = makeInviteButton(payload.socket_id);
+	$('.socket_'+payload.socket_id+' button').replaceWith(newNode);
+});
+
+/* Handle a notification that we have been uninvited */
+socket.on('uninvited', function(payload){
+	if(payload.result == 'fail'){
+		alert(payload.message);
+		return;
+	}
+	var newNode = makeInviteButton(payload.socket_id);
+	$('.socket_'+payload.socket_id+' button').replaceWith(newNode);
+});
+
+
+
+
+
+
 
 
 socket.on('send_message_response', function(payload){
@@ -171,9 +212,12 @@ function makeInviteButton(socket_id) {
 	return(newNode);
 }
 
-function makeInvitedButton() {
+function makeInvitedButton(socket_id) {
 	var newHTML = '<button type=\'button\' class=\'btn btn-primary\'>Invited</button>';
 	var newNode = $(newHTML);
+	newNode.click(function(){
+		uninvite(socket_id);
+	});
 	return(newNode);
 }
 
