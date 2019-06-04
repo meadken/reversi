@@ -1,7 +1,6 @@
 /* functions for general use */
 
 /* This function returns the value associated with 'whichParam' on the URL */
-/* New comment */
 
 function getURLParameters(whichParam) 
 {
