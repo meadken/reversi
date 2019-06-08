@@ -374,10 +374,14 @@ socket.on('game_update',function(payload){
 				else {
 						$('#'+row+'_'+column).html('<img src="assets/images/error.gif" alt="error"/>');
 				}
+			}
 
-				/* Set up interactivity */
-				$('#'+row+'_'+column).off('click');
-				if(board[row][column] == ' '){
+			/* Set up interactivity */
+			$('#'+row+'_'+column).off('click');
+			$('#'+row+'_'+column).removeClass('hovered_over');
+
+			if(payload.game.whose_turn === my_color){
+				if(payload.game.legal_moves[row][column] === my_color.substring(0,1)){
 					$('#'+row+'_'+column).addClass('hovered_over');
 					$('#'+row+'_'+column).click(function(r,c){
 						return function(){
@@ -391,12 +395,10 @@ socket.on('game_update',function(payload){
 						};
 					}(row,column));
 				}
-				else {
-					$('#'+row+'_'+column).removeClass('hovered_over');
-				}
-			}
-
+				
+			}	
 		}
+
 	}
 	$('#blacksum').html(blacksum);
 	$('#whitesum').html(whitesum);
