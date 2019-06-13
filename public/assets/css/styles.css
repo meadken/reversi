@@ -1,3 +1,9 @@
+/* Index */
+
+
+
+/* Game */
+
 body {
 		background-image: url('../images/bg.jpg');
 	}
@@ -25,4 +31,8 @@ table#game_board td {
 td.hovered_over:hover {
 	background:url('../images/hover.gif');
 	background-size: 100% 100%;
+}
+
+h2, h3, h4, p {
+	color: white;
 }
